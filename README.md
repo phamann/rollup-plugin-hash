@@ -13,12 +13,12 @@ becomes:
 
 ## Install
 
-Via npm
+via npm:
 ```sh
 npm install --save-dev rollup-plugin-hash
 ```
 
-Via yarn
+via yarn:
 ```sh
 yarn add --dev rollup-plugin-hash
 ```
