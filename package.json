@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-hash",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Rollup plugin to add a checksum to your destination filename",
   "main": "dist/rollup-plugin-hash.js",
   "module": "dist/rollup-plugin-hash.es.js",
@@ -16,10 +16,10 @@
   ],
   "scripts": {
     "lint": "eslint src/index.js",
-	"pretest": "npm run build",
+    "pretest": "npm run build",
     "test": "mocha",
     "build": "rollup -c",
-	"prepublish": "npm run lint && npm test && npm run build"
+    "prepublish": "npm run lint && npm test && npm run build"
   },
   "devDependencies": {
     "buble": "^0.15.2",
