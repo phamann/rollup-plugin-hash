@@ -11,7 +11,8 @@ process.chdir('test');
 
 const results = {
 	'md5': '07d2bf0d12655d9f51c0637718da4889.js',
-	'sha1': '56770a64be1a1132502b276c4132a76bb94d9e1b.js'
+	'sha1': '56770a64be1a1132502b276c4132a76bb94d9e1b.js',
+	'manifest': 'manifest.json'
 };
 
 function hashWithOptions(options) {
@@ -102,6 +103,18 @@ describe('rollup-plugin-hash', () => {
 			const hash = results.sha1.replace('.js', '');
 			const isDirectory = fs.lstatSync('tmp/' + hash).isDirectory();
 			expect(isDirectory).to.be.true;
+		});
+	});
+
+	it('should create a manifest.json if configured', () => {
+		const res = hashWithOptions({ dest: 'tmp/[hash].js', manifest: 'tmp/manifest.json' });
+		return res.then(() => {
+			const tmp = fs.readdirSync('tmp');
+			const manifest = require('./tmp/manifest.json');
+			expect(tmp).to.contain(results.manifest);
+			expect(manifest).to.be.an('object');
+			expect(manifest).to.have.property('tmp/index.js');
+			expect(manifest['tmp/index.js']).to.equal('tmp/' + results.sha1);
 		});
 	});
 
