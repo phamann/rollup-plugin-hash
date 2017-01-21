@@ -75,7 +75,7 @@ Hashing algorithm used to generate hash. Can be one of `md5`, `sha1`, `sha256`, 
 Type: `string`
 Required: `false`
 
-Filename to write a manifest to. Will generate a JSON manifest mapping input file to hashed output. 
+Filename to write a manifest to. Will generate a JSON manifest mapping input filename to hashed output filename. 
 Useful if you want to dynamically generate link to your hashed output server-side.
 
 Example manifest:
