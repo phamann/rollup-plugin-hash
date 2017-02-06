@@ -17,7 +17,8 @@ const defaultOptions = {
 const msg = {
 	noTemplate: '[Hash] Destination filename must contain `[hash]` template.',
 	noAlgorithm: '[Hash] Algorithm can only be one of: md5, sha1, sha256, sha512',
-	noManifest: '[Hash] Manifest filename must be a string'
+	noManifest: '[Hash] Manifest filename must be a string',
+	noInput: '[Hash] Input for manifest filename must be a string'
 };
 
 function hasTemplate(dest) {
@@ -72,6 +73,11 @@ export default function hash(opts = {}) {
 				return false;
 			}
 
+			if(options.input && typeof options.input !== 'string') {
+				logError(msg.noInput);
+				return false;
+			}
+
 			const hash = hasha(data.code, options);
 			const fileName = formatFilename(options.dest, hash);
 
@@ -80,7 +86,7 @@ export default function hash(opts = {}) {
 			}
 
 			if(options.manifest) {
-				const manifest = generateManifest(bundle.dest, fileName);
+				const manifest = generateManifest(options.input || bundle.dest, fileName);
 				mkdirpath(options.manifest);
 				fs.writeFileSync(options.manifest, manifest, 'utf8');
 			}

@@ -85,6 +85,15 @@ Example manifest:
 }
 ```
 
+### input
+
+Type: `string`
+Default: `bundle.dest`
+Required: `false`
+
+The name of your filename intro used in creating manifest. 
+Useful for unique build setups with manifests or builds with full path resolves.
+
 # License
 
 MIT ©
