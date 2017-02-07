@@ -120,7 +120,7 @@ describe('rollup-plugin-hash', () => {
 	});
 
 	it('should support custom manifest input name', () => {
-		const res = hashWithOptions({ input: 'custom/dir/index.js', dest: 'tmp/[hash].js', manifest: 'tmp/manifestCustomInput.json' });
+		const res = hashWithOptions({ manifestKey: 'custom/dir/index.js', dest: 'tmp/[hash].js', manifest: 'tmp/manifestCustomInput.json' });
 		return res.then(() => {
 			const tmp = fs.readdirSync('tmp');
 			const manifest = require('./tmp/manifestCustomInput.json');
