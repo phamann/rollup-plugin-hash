@@ -85,14 +85,14 @@ Example manifest:
 }
 ```
 
-### input
+### manifestKey
 
 Type: `string`
 Default: `bundle.dest`
 Required: `false`
 
-The name of your filename intro used in creating manifest. 
-Useful for unique build setups with manifests or builds with full path resolves.
+The filename used as the input key in the generated manifest map. 
+Useful in certain build setups where `path.resolve` is needed as `bundle.dest` but not in the manifest.
 
 # License
 
