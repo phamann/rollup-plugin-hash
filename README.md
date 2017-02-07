@@ -85,6 +85,15 @@ Example manifest:
 }
 ```
 
+### manifestKey
+
+Type: `string`
+Default: `bundle.dest`
+Required: `false`
+
+The filename used as the input key in the generated manifest map. 
+Useful in certain build setups where `path.resolve` is needed as `bundle.dest` but not in the manifest.
+
 # License
 
 MIT ©
