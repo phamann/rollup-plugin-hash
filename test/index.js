@@ -4,7 +4,7 @@ const hash = require('../');
 const { rollup } = require('rollup');
 const chai = require('chai');
 const expect = chai.expect;
-const chaiAsPromised = require("chai-as-promised");
+const chaiAsPromised = require('chai-as-promised');
 
 chai.use(chaiAsPromised);
 process.chdir('test');
@@ -12,7 +12,8 @@ process.chdir('test');
 const results = {
 	'md5': '07d2bf0d12655d9f51c0637718da4889.js',
 	'sha1': '56770a64be1a1132502b276c4132a76bb94d9e1b.js',
-	'manifest': 'manifest.json'
+	'manifest': 'manifest.json',
+	'manifestCustomInput': 'manifestCustomInput.json'
 };
 
 function hashWithOptions(options) {
@@ -115,6 +116,18 @@ describe('rollup-plugin-hash', () => {
 			expect(manifest).to.be.an('object');
 			expect(manifest).to.have.property('tmp/index.js');
 			expect(manifest['tmp/index.js']).to.equal('tmp/' + results.sha1);
+		});
+	});
+
+	it('should support custom manifest input name', () => {
+		const res = hashWithOptions({ input: 'custom/dir/index.js', dest: 'tmp/[hash].js', manifest: 'tmp/manifestCustomInput.json' });
+		return res.then(() => {
+			const tmp = fs.readdirSync('tmp');
+			const manifest = require('./tmp/manifestCustomInput.json');
+			expect(tmp).to.contain(results.manifestCustomInput);
+			expect(manifest).to.be.an('object');
+			expect(manifest).to.have.property('custom/dir/index.js');
+			expect(manifest['custom/dir/index.js']).to.equal('tmp/' + results.sha1);
 		});
 	});
 
