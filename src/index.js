@@ -26,11 +26,7 @@ function hasTemplate(dest) {
 }
 
 function generateManifest(input, output) {
-	return `
-		{
-			"${input}": "${output}"
-		}
-	`;
+	return JSON.stringify({[input]: output});
 }
 
 function formatFilename(dest, hash) {
@@ -96,4 +92,3 @@ export default function hash(opts = {}) {
 		}
 	};
 }
-
