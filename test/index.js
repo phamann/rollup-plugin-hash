@@ -18,14 +18,14 @@ const results = {
 
 function hashWithOptions(options) {
 	return rollup({
-		entry: 'fixtures/index.js',
+		input: 'fixtures/index.js',
 		plugins: [
 			hash(options)
 		]
 	}).then(bundle => {
 		return bundle.write({
 			format: 'es',
-			dest: 'tmp/index.js'
+			file: 'tmp/index.js'
 		});
 	});
 }

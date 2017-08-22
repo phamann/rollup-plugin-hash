@@ -3,7 +3,7 @@ import nodeResolve from 'rollup-plugin-node-resolve';
 import buble from 'rollup-plugin-buble';
 
 export default {
-	entry: 'src/index.js',
+	input: 'src/index.js',
 	plugins: [
 		buble({
 			include: [ 'src/index.js' ],
@@ -21,8 +21,8 @@ export default {
 		'path',
 		'hasha'
 	],
-	targets: [
-		{ dest: 'dist/rollup-plugin-hash.js', format: 'cjs' },
-		{ dest: 'dist/rollup-plugin-hash.es.js', format: 'es' }
+	output: [
+		{ file: 'dist/rollup-plugin-hash.js', format: 'cjs' },
+		{ file: 'dist/rollup-plugin-hash.es.js', format: 'es' }
 	]
 };
