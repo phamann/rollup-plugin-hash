@@ -53,8 +53,10 @@ export default function hash(opts = {}) {
 	return {
 		name: 'hash',
 		onwrite: function(bundle, data) {
+			const destinationOption = options.output ? options.output.file : options.dest;
+			const builtFile = bundle.file || bundle.dest;
 
-			if(!options.dest || !hasTemplate(options.dest)) {
+			if(!destinationOption || !hasTemplate(destinationOption)) {
 				logError(msg.noTemplate);
 				return false;
 			}
@@ -75,14 +77,14 @@ export default function hash(opts = {}) {
 			}
 
 			const hash = hasha(data.code, options);
-			const fileName = formatFilename(options.dest, hash);
+			const fileName = formatFilename(destinationOption, hash);
 
 			if(options.replace) {
-				fs.unlinkSync(bundle.dest);
+				fs.unlinkSync(builtFile);
 			}
 
 			if(options.manifest) {
-				const manifest = generateManifest(options.manifestKey || bundle.dest, fileName);
+				const manifest = generateManifest(options.manifestKey || builtFile, fileName);
 				mkdirpath(options.manifest);
 				fs.writeFileSync(options.manifest, manifest, 'utf8');
 			}
