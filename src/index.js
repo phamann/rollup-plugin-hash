@@ -90,7 +90,24 @@ export default function hash(opts = {}) {
 			}
 
 			mkdirpath(fileName);
-			fs.writeFileSync(fileName, data.code, 'utf8');
+
+			let code = data.code;
+			if (bundle.sourcemap) {
+				const basename = path.basename(fileName);
+				data.map.file = basename;
+
+				let url;
+				if (bundle.sourcemap === 'inline') {
+					url = data.map.toUrl();
+				} else {
+					url = basename + '.map';
+					fs.writeFileSync(fileName + '.map', data.map.toString());
+				}
+
+				code += `\n//# sourceMappingURL=${url}`;
+			}
+
+			fs.writeFileSync(fileName, code, 'utf8');
 		}
 	};
 }

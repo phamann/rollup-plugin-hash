@@ -16,17 +16,17 @@ const results = {
 	'manifestCustomInput': 'manifestCustomInput.json'
 };
 
-function hashWithOptions(options) {
+function hashWithOptions(options, outputOptions) {
 	return rollup({
 		input: 'fixtures/index.js',
 		plugins: [
 			hash(options)
 		]
 	}).then(bundle => {
-		return bundle.write({
+		return bundle.write(Object.assign({
 			format: 'es',
 			file: 'tmp/index.js'
-		});
+		}, outputOptions));
 	});
 }
 
@@ -43,6 +43,10 @@ function rmDirectoryRecursive(path) {
 		fs.rmdirSync(path);
 	}
 };
+
+function readJson(file) {
+	return JSON.parse(fs.readFileSync(file, 'utf-8'));
+}
 
 describe('rollup-plugin-hash', () => {
 
@@ -70,6 +74,33 @@ describe('rollup-plugin-hash', () => {
 		return res.then(() => {
 			const tmp = fs.readdirSync('tmp');
 			expect(tmp).to.contain(results.sha1);
+		});
+	});
+
+	it('should create a sourcemap, if applicable', () => {
+		const res = hashWithOptions({ dest: 'tmp/[hash].js' }, { sourcemap: true });
+		return res.then(() => {
+			const tmp = fs.readdirSync('tmp');
+			expect(tmp).to.contain(results.sha1);
+			expect(tmp).to.contain(results.sha1 + '.map');
+			const code = fs.readFileSync(`tmp/${results.sha1}`, 'utf-8');
+			expect(code).to.contain(`//# sourceMappingURL=${results.sha1}.map`);
+			const map = readJson(`tmp/${results.sha1}.map`);
+			expect(map.file).to.equal(results.sha1);
+		});
+	});
+
+	it('should attach an inline sourcemap, if applicable', () => {
+		const res = hashWithOptions({ dest: 'tmp/[hash].js' }, { sourcemap: 'inline' });
+		return res.then(() => {
+			const tmp = fs.readdirSync('tmp');
+			expect(tmp).to.contain(results.sha1);
+			expect(tmp).not.to.contain(results.sha1 + '.map');
+			const code = fs.readFileSync(`tmp/${results.sha1}`, 'utf-8');
+			const base64 = /^\/\/# sourceMappingURL=data:application\/json;charset=utf-8;base64,(.+)/m.exec(code)[1];
+			const json = new Buffer(base64, 'base64').toString();
+			const map = JSON.parse(json);
+			expect(map.file).to.equal(results.sha1);
 		});
 	});
 
