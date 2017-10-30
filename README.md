@@ -43,6 +43,9 @@ rollup({
 });
 ```
 
+Meanwhile, if dest filename is written the following way, only first 4 characters of hash will
+be used in final filename: `main.[hash:4].js`. You could change this number to modify the
+output result.
 
 ## Options
 
