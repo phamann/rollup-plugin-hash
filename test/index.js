@@ -121,6 +121,22 @@ describe('rollup-plugin-hash', () => {
 		});
 	});
 
+	it('should replace dest filename template with sub-string of bundle hash', () => {
+		const res = hashWithOptions({ dest: 'tmp/[hash:4].js' });
+		return res.then(() => {
+			const tmp = fs.readdirSync('tmp');
+			expect(tmp).to.contain(`${results.sha1.substr(0, 4)}.js`);
+		});
+	});
+
+	it('should use bundle hash when substring length is greater then original', () => {
+		const res = hashWithOptions({ dest: 'tmp/[hash:41].js' });
+		return res.then(() => {
+			const tmp = fs.readdirSync('tmp');
+			expect(tmp).to.contain(results.sha1);
+		});
+	});
+
 	it(`should create dest folder structure if doesn't exist`, () => {
 		const res = hashWithOptions({ dest: 'tmp/test/[hash].js' });
 		return res.then(() => {

@@ -21,8 +21,10 @@ const msg = {
 	noManifestKey: '[Hash] Key for manifest filename must be a string'
 };
 
+const pattern = /\[hash(?::(\d+))?\]/;
+
 function hasTemplate(dest) {
-	return /\[hash\]/.test(dest);
+	return pattern.test(dest);
 }
 
 function generateManifest(input, output) {
@@ -30,7 +32,13 @@ function generateManifest(input, output) {
 }
 
 function formatFilename(dest, hash) {
-	return dest.replace('[hash]', hash);
+	const match = pattern.exec(dest);
+	const length = match && match[1];
+	let hashResult = hash;
+	if (length) {
+		hashResult = hash.substr(0, +length);
+	}
+	return dest.replace(pattern, hashResult);
 }
 
 function mkdirpath (dest) {
