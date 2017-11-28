@@ -25,6 +25,7 @@
     "buble": "^0.15.2",
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
+    "chai-spies": "^0.7.1",
     "eslint": "^3.13.1",
     "mocha": "^3.2.0",
     "rollup": "^0.48.0",

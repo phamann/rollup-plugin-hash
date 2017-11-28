@@ -5,7 +5,9 @@ const { rollup } = require('rollup');
 const chai = require('chai');
 const expect = chai.expect;
 const chaiAsPromised = require('chai-as-promised');
+const chaiSpies = require('chai-spies');
 
+chai.use(chaiSpies);
 chai.use(chaiAsPromised);
 process.chdir('test');
 
@@ -178,4 +180,12 @@ describe('rollup-plugin-hash', () => {
 		});
 	});
 
+	it('should call a callback with the hashed filename, if supplied', () => {
+		const callback = chai.spy();
+		const res = hashWithOptions({ dest: 'tmp/[hash].js', manifest: 'tmp/manifest.json', callback });
+		return res.then(() => {
+			expect(callback).to.have.been.called.once;
+			expect(callback).to.have.been.called.with(`tmp/${results.sha1}`);
+		});
+	});
 });

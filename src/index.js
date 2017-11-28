@@ -116,6 +116,10 @@ export default function hash(opts = {}) {
 			}
 
 			fs.writeFileSync(fileName, code, 'utf8');
+
+			if(options.callback && typeof options.callback === 'function') {
+				options.callback(fileName);
+			}
 		}
 	};
 }
