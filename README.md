@@ -97,6 +97,13 @@ Required: `false`
 The filename used as the input key in the generated manifest map. 
 Useful in certain build setups where `path.resolve` is needed as `bundle.dest` but not in the manifest.
 
+### callback
+
+Type: `function`
+Required: `false`
+
+Callback which is called with the resulting hashed filename. This is useful if you are integrating with other build steps and want to store the filename locally to be used in subsequent configs etc.
+
 # License
 
 MIT ©
